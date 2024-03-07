@@ -11,7 +11,7 @@ SPI(Serial Peripheral Interface，串行外设接口)是由Motorola公司开发�
 > > 1. SCK：Serial Clock，串行时钟线。别称SCLK、CLK、CK。作用是提供时钟信号，数据位的输入和输出都是在时钟上升沿、下降沿进行的。
 > > 2. MOSI：Master Output Slave Input，主机输出从机输入。别称DO(Data Output)。
 > > 3. MISO：Master Input Slave Output，主机输入从机输出。别称DI(Data Input)。
-> > 4. SS：Slave Select，从机选择。别称NSS(Not Slave Select)、CS(Chip Select)。<u>SPI协议可以为每个从机都开辟一条SS线，专门用于控制该从机的选择(低电平有效)</u>（SPI壕无人性）。
+> > 4. SS：Slave Select，从机选择。别称NSS(Not Slave Select)、CS(Chip Select)。<u>SPI协议可以为每个从机都开辟一条SS线，专门用于控制该从机的选择(低电平有效)</u>。
 > - 同步(时钟线快点慢点无所谓)，全双工，**高位先行**。
 > - 支持总线挂载多设备，仅支持“一主多从”，不支持“多主机”。
 
@@ -35,6 +35,7 @@ IIC和SPI各有优缺点。IIC通过各种软硬件设置，使用最少的硬�
 
 下面来介绍**SPI基本收发时序**：
 **SPI通信的基础是交换字节**。也就是说，每次SPI通信的过程中，通过各自的MOSI、MISO线，主机和从机的寄存器会形成一个循环移位操作，每个比特的通信都是转圈的循环移位，8个时钟周期完整的交换一个字节。那么根据需求有选择的忽略交换过来的数据，就可以实现（以主机举例，从机同理）主机只发送、主机只接收、主从机交换数据这三类操作。
+
 <div align=center>
 <img src="https://raw.githubusercontent.com/jjejdhhd/Git_img2023/main/STM32F103_JKD/11-3SPI%E4%BA%A4%E6%8D%A2%E5%AD%97%E8%8A%82.png" width="60%">
 </div><div align=center>
@@ -71,10 +72,11 @@ IIC和SPI各有优缺点。IIC通过各种软硬件设置，使用最少的硬�
 
 1. 发送指令：向SS指定的设备，发送指令（0x06）。
 <div align=center>
-<img src="https://raw.githubusercontent.com/jjejdhhd/Git_img2023/main/STM32F103_JKD/11-4SPI%E5%8F%91%E9%80%81%E6%8C%87%E4%BB%A4.png" width="55%">
+<img src="https://raw.githubusercontent.com/jjejdhhd/Git_img2023/main/STM32F103_JKD/11-4SPI%E5%8F%91%E9%80%81%E6%8C%87%E4%BB%A4.png" width="70%">
 </div><div align=center>
 图11-4 时序图——SPI发送指令
 </div>
+
 
 由于上图是软件模拟SPI时序，所以MOSI的数据变化（那个上升沿）没有紧贴SCK下降沿，但是在硬件模拟SPI中是紧贴的。
 
